@@ -10,7 +10,7 @@ import warnings
 torch.classes.__path__ = []
 
 #os.environ["TOKENIZERS_PARALLELISM"] = "false"
-#warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore")
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 st.set_page_config(
