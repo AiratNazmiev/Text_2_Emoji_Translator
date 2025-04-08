@@ -20,6 +20,7 @@ st.set_page_config(
     page_icon=":fast_forward:",
     layout="centered",
 )
+st.title("Message 📝 to Emoji 😎 Translator")
 
 st.markdown("""
     <style>
@@ -60,8 +61,6 @@ st.markdown("""
 #     """,
 #     unsafe_allow_html=True,
 # )
-
-st.title("Message 📝 to Emoji 😎 Translator")
 
 available_languages = {
     "English 🦁" : ("en", "Enter the message to translate...", "English language"), 
