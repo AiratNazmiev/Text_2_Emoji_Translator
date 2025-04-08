@@ -16,4 +16,4 @@ BART-base (Bidirectional and Auto-Regressive Transformers) — это транс
 
 Cсылка на HF: https://huggingface.co/AiratNazmiev
 
-![](img/example_en)
+![](img/example_en.png)
