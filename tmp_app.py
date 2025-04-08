@@ -111,7 +111,7 @@ st.text(ru_en_translator(language_option))
 st.text(zh_en_translator(language_option))
 
 st.text(msg2emoji_translator.translate(
-    ru_en_translator(text_preprocessing(language_option)),
+    ru_en_translator(text_preprocessing(language_option, ru_en_translator, zh_en_translator, 'ru')),
     sep='',
     num_beams=5, 
     do_sample=True, 
