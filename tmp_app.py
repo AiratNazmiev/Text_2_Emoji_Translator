@@ -22,26 +22,26 @@ st.set_page_config(
 )
 st.title("Message 📝 to Emoji 😎 Translator")
 
-st.markdown("""
-    <style>
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #FFF1;
-        text-align: center;
-        padding: 15px;
-        font-size: 15px;
-        color: #FFFFFF;
-    }
-    </style>
-    <div class="footer">
-        &copy; Nazmiev Airat 2025 👋
+# st.markdown("""
+#     <style>
+#     .footer {
+#         position: fixed;
+#         bottom: 0;
+#         left: 0;
+#         width: 100%;
+#         background-color: #FFF1;
+#         text-align: center;
+#         padding: 15px;
+#         font-size: 15px;
+#         color: #FFFFFF;
+#     }
+#     </style>
+#     <div class="footer">
+#         &copy; Nazmiev Airat 2025 👋
     
-    </div>
-    """, unsafe_allow_html=True
-)
+#     </div>
+#     """, unsafe_allow_html=True
+# )
 
 # st.markdown(
 #     """
@@ -70,21 +70,6 @@ available_languages = {
 language_abbr = {name : x[0] for name, x in available_languages.items()}
 language_placeholder = {name : x[1] for name, x in available_languages.items()}
 language_label = {name : x[2] for name, x in available_languages.items()}
-
-language_option = st.selectbox(
-    "Select language:",
-    available_languages.keys(),
-    index=0,
-    placeholder="Select language...",
-)
-
-text_value = st.text_area(
-    label=language_label[language_option],
-    placeholder=language_placeholder[language_option],
-    max_chars=twitter_magic_number,
-    help=f"Let's speak the language of facts 😉. Facts are limited to {twitter_magic_number} chars (twit size)",
-    height=150
-)
 
 def translate(text: str, model, tokenizer) -> str:
     input_tokens = tokenizer(text, return_tensors="pt")
@@ -161,6 +146,20 @@ def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: 
     
     return text_re
 
+language_option = st.selectbox(
+    "Select language:",
+    available_languages.keys(),
+    index=0,
+    placeholder="Select language...",
+)
+
+text_value = st.text_area(
+    label=language_label[language_option],
+    placeholder=language_placeholder[language_option],
+    max_chars=twitter_magic_number,
+    help=f"Let's speak the language of facts 😉. Facts are limited to {twitter_magic_number} chars (twit size)",
+    height=150
+)
 
 ru_en_translator = load_ru_en_translator()
 zh_en_translator = load_zh_en_translator()
