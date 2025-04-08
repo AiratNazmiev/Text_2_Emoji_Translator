@@ -103,7 +103,7 @@ st.text(ru_en_translator('Привет!'))
 
 language_option = st.selectbox(
         "Select language:",
-        ("английский язык", "русский язык", "китайский язык"),
+        ("английский язык. и точка", "русский язык", "китайский язык"),
         index=0,
         placeholder="Select language...",
     )
@@ -111,7 +111,7 @@ st.text(ru_en_translator(language_option))
 st.text(zh_en_translator(language_option))
 
 st.text(msg2emoji_translator.translate(
-    ru_en_translator(language_option),
+    ru_en_translator(text_preprocessing(language_option)),
     sep='',
     num_beams=5, 
     do_sample=True, 
