@@ -21,26 +21,26 @@ st.set_page_config(
     layout="centered",
 )
 
-st.markdown("""
-    <style>
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #FFF1;
-        text-align: center;
-        padding: 15px;
-        font-size: 15px;
-        color: #FFFFFF;
-    }
-    </style>
-    <div class="footer">
-        &copy; Nazmiev Airat 2025 👋
+# st.markdown("""
+#     <style>
+#     .footer {
+#         position: fixed;
+#         bottom: 0;
+#         left: 0;
+#         width: 100%;
+#         background-color: #FFF1;
+#         text-align: center;
+#         padding: 15px;
+#         font-size: 15px;
+#         color: #FFFFFF;
+#     }
+#     </style>
+#     <div class="footer">
+#         &copy; Nazmiev Airat 2025 👋
     
-    </div>
-    """, unsafe_allow_html=True
-)
+#     </div>
+#     """, unsafe_allow_html=True
+# )
 
 st.markdown(
     """
@@ -57,7 +57,22 @@ st.markdown(
         color: #000000 !important;
         -webkit-text-fill-color: #FFFFFF !important;
     }
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #FFF1;
+        text-align: center;
+        padding: 15px;
+        font-size: 15px;
+        color: #FFFFFF;
+    }
     </style>
+    <div class="footer">
+        &copy; Nazmiev Airat 2025 👋
+    
+    </div>
     """,
     unsafe_allow_html=True,
 )
