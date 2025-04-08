@@ -34,6 +34,15 @@ def load_ru_en_translator():
     
     return ru_en_translator
 
+
 ru_en_translator = load_ru_en_translator()
 
 st.text(ru_en_translator('Привет!'))
+
+language_option = st.selectbox(
+        "Select language:",
+        ("en", "ru", "zh"),
+        index=0,
+        placeholder="Select language...",
+    )
+st.text(language_option)
