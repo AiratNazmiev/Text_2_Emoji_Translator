@@ -43,9 +43,48 @@ def load_zh_en_translator():
     
     return zh_en_translator
 
+@st.cache_resource
+def load_msg2emoji_translator():
+    class Msg2EmojiTranslator:
+        def __init__(
+            self,
+            tokenizer,
+            generator,
+            device: torch.device
+        ) -> None:
+            self.device = device
+            self.tokenizer = tokenizer
+            self.generator = generator.to(self.device)
+            
+        def translate(self, sentence: str | list[str], sep: str = '', **kwargs) -> torch.Tensor:
+            decoded_emojis_list = []
+            
+            if isinstance(sentence, str):
+                sentence = [sentence]
+
+            for s in sentence:
+                text_tokens = self.tokenizer(s, return_tensors="pt")
+                generated_emoji_tokens = self.generator.generate(text_tokens["input_ids"].to(self.device), **kwargs)
+                decoded_emojis = self.tokenizer.decode(generated_emoji_tokens[0].cpu(), skip_special_tokens=True).replace(" ", "")
+                decoded_emojis_list.append(decoded_emojis)
+                
+            return sep.join(decoded_emojis_list)
+    
+    tokenizer = transformers.BartTokenizer.from_pretrained('AiratNazmiev/text2emoji-tokenizer')
+    generator = transformers.BartForConditionalGeneration.from_pretrained('AiratNazmiev/text2emoji-bart-base')
+    
+    msg2emoji_translator = Msg2EmojiTranslator(
+        tokenizer=tokenizer,
+        generator=generator,
+        device=device
+    )
+    
+    return msg2emoji_translator
+
 
 ru_en_translator = load_ru_en_translator()
 zh_en_translator = load_zh_en_translator()
+msg2emoji_translator = load_msg2emoji_translator()
 
 st.text(ru_en_translator('Привет!'))
 
@@ -57,3 +96,5 @@ language_option = st.selectbox(
     )
 st.text(ru_en_translator(language_option))
 st.text(zh_en_translator(language_option))
+
+st.text(msg2emoji_translator(language_option))
