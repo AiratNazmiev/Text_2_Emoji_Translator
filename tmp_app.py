@@ -21,6 +21,27 @@ st.set_page_config(
     layout="centered",
 )
 
+st.markdown("""
+    <style>
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #FFF1;
+        text-align: center;
+        padding: 15px;
+        font-size: 15px;
+        color: #FFFFFF;
+    }
+    </style>
+    <div class="footer">
+        &copy; Nazmiev Airat 2025 👋
+    
+    </div>
+    """, unsafe_allow_html=True
+)
+
 st.markdown(
     """
     <style>
@@ -42,27 +63,6 @@ st.markdown(
 )
 
 st.title("Message 📝 to Emoji 😎 Translator")
-
-st.markdown("""
-    <style>
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #FFF1;
-        text-align: center;
-        padding: 15px;
-        font-size: 15px;
-        color: #FFFFFF;
-    }
-    </style>
-    <div class="footer">
-        &copy; Nazmiev Airat 2025 👋
-    
-    </div>
-    """, unsafe_allow_html=True
-)
 
 available_languages = {
     "English 🦁" : ("en", "Enter the message to translate...", "English language"), 
