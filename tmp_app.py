@@ -9,6 +9,8 @@ import warnings
 
 torch.classes.__path__ = []
 
+twitter_magic_number = 280
+
 #os.environ["TOKENIZERS_PARALLELISM"] = "false"
 warnings.filterwarnings("ignore")
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
