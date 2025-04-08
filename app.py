@@ -99,7 +99,6 @@ def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: 
 
 ###
 def main():
-    
     st.markdown(
         """
         <style>
