@@ -21,6 +21,38 @@ st.set_page_config(
     layout="centered",
 )
 
+st.markdown(
+    """
+    <style>
+    textarea:disabled {
+        opacity: 1 !important;                     
+        color: #000000 !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        background-color: inherit !important;
+        filter: none !important;
+    }
+    [data-testid="stTextArea"] label {
+        opacity: 1 !important;
+        color: #000000 !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.title("Message 📝 to Emoji 😎 Translator")
+
+available_languages = {
+    "English 🦁" : ("en", "Enter the message to translate...", "English language"), 
+    "Russian 🐻" : ("ru", "Введите сообщение для перевода...", "Русский язык"), 
+    "Chinese 🐼" : ("zh", "输入要翻译的文本...", "中文")
+}
+language_abbr = {name : x[0] for name, x in available_languages.items()}
+language_placeholder = {name : x[1] for name, x in available_languages.items()}
+language_label = {name : x[2] for name, x in available_languages.items()}
+
+
 def translate(text: str, model, tokenizer) -> str:
     input_tokens = tokenizer(text, return_tensors="pt")
     output_tokens = model.generate(**input_tokens)[0]
