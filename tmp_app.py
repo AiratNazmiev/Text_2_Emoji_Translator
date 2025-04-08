@@ -56,7 +56,7 @@ def load_msg2emoji_translator():
             self.tokenizer = tokenizer
             self.generator = generator.to(self.device)
             
-        def translate(self, sentence: str | list[str], sep: str = '', **kwargs) -> torch.Tensor:
+        def (self, sentence: str | list[str], sep: str = '', **kwargs) -> torch.Tensor:
             decoded_emojis_list = []
             
             if isinstance(sentence, str):
@@ -81,6 +81,19 @@ def load_msg2emoji_translator():
     
     return msg2emoji_translator
 
+def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: str = 'en') -> str:
+    if language == 'ru':
+        text = ru_en_translator(text)
+    elif language == 'zh':
+        text = zh_en_translator(text)
+    
+    if len(text) > twitter_magic_number:
+        print(f"It's twit translator. The max length of the input is {twitter_magic_number} characters")
+        
+    text_re = re.split(r"(?<=[.|!|?|\.\.\.])\s+", text.strip())
+    
+    return text_re
+
 
 ru_en_translator = load_ru_en_translator()
 zh_en_translator = load_zh_en_translator()
@@ -97,7 +110,7 @@ language_option = st.selectbox(
 st.text(ru_en_translator(language_option))
 st.text(zh_en_translator(language_option))
 
-st.text(msg2emoji_translator.translate(
+st.text(msg2emoji_translator.(
     ru_en_translator(language_option),
     sep='',
     num_beams=5, 
