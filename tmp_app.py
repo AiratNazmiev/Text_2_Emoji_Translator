@@ -170,18 +170,26 @@ msg2emoji_translator = load_msg2emoji_translator()
 st.text(ru_en_translator('Привет!'))
 
 language_option = st.selectbox(
-        "Select language:",
-        ("английский язык. и точка", "русский язык", "китайский язык"),
-        index=0,
-        placeholder="Select language...",
-    )
-st.text(ru_en_translator(language_option))
-st.text(zh_en_translator(language_option))
+    "Select language:",
+    ("английский язык. и точка", "русский язык", "китайский язык"),
+    index=0,
+    placeholder="Select language...",
+)
 
-st.text(msg2emoji_translator.translate(
-    ru_en_translator(text_preprocessing(language_option, ru_en_translator, zh_en_translator, 'ru')),
-    sep='',
-    num_beams=5, 
-    do_sample=True, 
-    max_length=20
-))
+text_value = st.text_area(
+    label=language_label[language_option],
+    placeholder=language_placeholder[language_option],
+    max_chars=twitter_magic_number,
+    help=f"Let's speak the language of facts 😉. Facts are limited to {twitter_magic_number} chars (twit size)",
+    height=150
+)
+# st.text(ru_en_translator(language_option))
+# st.text(zh_en_translator(language_option))
+
+# st.text(msg2emoji_translator.translate(
+#     ru_en_translator(text_preprocessing(language_option, ru_en_translator, zh_en_translator, 'ru')),
+#     sep='',
+#     num_beams=5, 
+#     do_sample=True, 
+#     max_length=20
+# ))
