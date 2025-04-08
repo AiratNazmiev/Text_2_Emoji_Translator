@@ -109,8 +109,8 @@ def load_msg2emoji_translator():
                 
             return sep.join(decoded_emojis_list)
     
-    tokenizer = transformers.BartTokenizer.from_pretrained('AiratNazmiev/text2emoji-tokenizer')
-    generator = transformers.BartForConditionalGeneration.from_pretrained('AiratNazmiev/text2emoji-bart-base')
+    tokenizer = transformers.BartTokenizer.from_pretrained('KomeijiForce/bart-base-emojilm')#'AiratNazmiev/text2emoji-tokenizer')
+    generator = transformers.BartForConditionalGeneration.from_pretrained('KomeijiForce/bart-base-emojilm')#'AiratNazmiev/text2emoji-bart-base')
     
     msg2emoji_translator = Msg2EmojiTranslator(
         tokenizer=tokenizer,
