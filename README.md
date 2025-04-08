@@ -12,4 +12,4 @@ BART-base (Bidirectional and Auto-Regressive Transformers) — это транс
 
 Модель была развернута на сервере streamlit, с понятым и аккуратным интерфейсом. Инференс модели быстрый, кеширование данных и модели производится правильно. Весь код приложения доступен в **app.py**.
 
-Ссылка на streanlit: https://text2emojitranslator.streamlit.app/
+Ссылка на streamlit: https://text2emojitranslator.streamlit.app/
