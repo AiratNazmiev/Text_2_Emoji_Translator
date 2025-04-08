@@ -12,6 +12,8 @@ BART-base (Bidirectional and Auto-Regressive Transformers) — это транс
 
 Модель была развернута на сервере streamlit, с понятым и аккуратным интерфейсом. Инференс модели быстрый, кеширование данных и модели производится правильно. Весь код приложения доступен в **app.py**.
 
+Github: https://github.com/AiratNazmiev/Text_2_Emoji_Translator
+
 Ссылка на streamlit: https://text2emojitranslator.streamlit.app/. Если по какой-то причине страница не откроется правильно, работающая версия есть в app.py, которую можно запустить локально.
 
 Cсылка на HF: https://huggingface.co/AiratNazmiev
