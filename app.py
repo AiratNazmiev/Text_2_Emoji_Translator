@@ -138,7 +138,7 @@ def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: 
 
 ###
 def main():
-    ru_en_translator, zh_en_translator = load_translators()
+    ru_en_translator, zh_en_translator = None, None #load_translators()
     msg2emoji_translator = load_msg2emoji_translator()
     if st.button("Translate"):
         if not text_value:
