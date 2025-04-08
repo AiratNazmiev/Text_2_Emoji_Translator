@@ -69,14 +69,16 @@ def load_translators():
        # "translation_ru_to_en", 
        "translation",
         model="Helsinki-NLP/opus-mt-ru-en",
-        cache_dir="~/.cache/huggingface/transformers"
+        cache_dir="~/.cache/huggingface/transformers",
+        use_auth_token=True
     )
 
     zh_en_translator = transformers.pipeline(
         #"translation_zh_to_en", 
         "translation",
         model="Helsinki-NLP/opus-mt-zh-en",
-        cache_dir="~/.cache/huggingface/transformers"
+        cache_dir="~/.cache/huggingface/transformers",
+        use_auth_token=True
     )
     
     return ru_en_translator, zh_en_translator
