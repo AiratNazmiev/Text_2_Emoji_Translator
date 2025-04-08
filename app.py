@@ -66,11 +66,15 @@ text_value = st.text_area(
 ### load translators:
 @st.cache_resource
 def load_translators():
-    ru_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-ru-en")
-    ru_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-ru-en")
+    ru_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-ru-en", local_files_only=True)
+    ru_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-ru-en", local_files_only=True)
+    ru_en_tokenizer.save_pretrained("./local_models/opus-mt-ru-en")
+    ru_en_model.save_pretrained("./local_models/opus-mt-ru-en")
 
-    zh_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-zh-en")
-    zh_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-zh-en")
+    zh_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-zh-en", local_files_only=True)
+    zh_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-zh-en", local_files_only=True)
+    zh_en_tokenizer.save_pretrained("./local_models/opus-mt-zh-en")
+    zh_en_model.save_pretrained("./local_models/opus-mt-zh-en")
     
     def translate(text: str, model, tokenizer) -> str:
         input_tokens = tokenizer(text, return_tensors="pt")
