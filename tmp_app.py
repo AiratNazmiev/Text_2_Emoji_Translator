@@ -34,8 +34,18 @@ def load_ru_en_translator():
     
     return ru_en_translator
 
+@st.cache_resource
+def load_zh_en_translator():
+    zh_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-zh-en", local_files_only=False)
+    zh_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-zh-en", local_files_only=False)
+
+    zh_en_translator = functools.partial(translate, model=zh_en_model, tokenizer=zh_en_tokenizer)
+    
+    return zh_en_translator
+
 
 ru_en_translator = load_ru_en_translator()
+zh_en_translator = load_zh_en_translator()
 
 st.text(ru_en_translator('Привет!'))
 
@@ -46,3 +56,4 @@ language_option = st.selectbox(
         placeholder="Select language...",
     )
 st.text(ru_en_translator(language_option))
+st.text(zh_en_translator(language_option))
