@@ -110,7 +110,7 @@ language_option = st.selectbox(
 st.text(ru_en_translator(language_option))
 st.text(zh_en_translator(language_option))
 
-st.text(msg2emoji_translator.(
+st.text(msg2emoji_translator.translate(
     ru_en_translator(language_option),
     sep='',
     num_beams=5, 
