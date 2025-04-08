@@ -1,8 +1,10 @@
 import torch
 import transformers
-from transformers import pipeline
 import re
 import streamlit as st
+import os
+import multiprocessing
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 twitter_magic_number = 280
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -62,19 +64,22 @@ text_value = st.text_area(
 ### load translators:
 @st.cache_resource
 def load_translators():
-    ru_en_translator = pipeline(
-        "translation_ru_to_en", 
-        model="Helsinki-NLP/opus-mt-ru-en"
+    
+    ru_en_translator = transformers.pipeline(
+       # "translation_ru_to_en", 
+       "translation",
+        model="Helsinki-NLP/opus-mt-ru-en",
+        cache_dir="~/.cache/huggingface/transformers"
     )
 
-    zh_en_translator = pipeline(
-        "translation_zh_to_en", 
-        model="Helsinki-NLP/opus-mt-zh-en"
+    zh_en_translator = transformers.pipeline(
+        #"translation_zh_to_en", 
+        "translation",
+        model="Helsinki-NLP/opus-mt-zh-en",
+        cache_dir="~/.cache/huggingface/transformers"
     )
     
     return ru_en_translator, zh_en_translator
-
-ru_en_translator, zh_en_translator = load_translators()
 ###
 
 ### create message-to-emoji translator wrapper class:
@@ -115,12 +120,10 @@ def load_msg2emoji_translator():
     )
     
     return msg2emoji_translator
-
-msg2emoji_translator = load_msg2emoji_translator()
 ###
 
 ### text preprocessing
-def text_preprocessing(text: str, language: str = 'en') -> str:
+def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: str = 'en') -> str:
     if language == 'ru':
         text = ru_en_translator(text)[0]['translation_text']
     elif language == 'zh':
@@ -134,24 +137,33 @@ def text_preprocessing(text: str, language: str = 'en') -> str:
     return text_re
 ###
 
-if st.button("Translate"):
-    if not text_value:
-        st.warning("Please, enter the message 🤔", icon="⚠️")
-    else:
-        emoji_text = msg2emoji_translator.translate(
-            text_preprocessing(text_value, language=language_abbr[language_option]),
-            sep='',
-            num_beams=5, 
-            do_sample=True, 
-            max_length=20
-        )
+###
+def main():
+    ru_en_translator, zh_en_translator = load_translators()
+    msg2emoji_translator = load_msg2emoji_translator()
+    if st.button("Translate"):
+        if not text_value:
+            st.warning("Please, enter the message 🤔", icon="⚠️")
+        else:
+            emoji_text = msg2emoji_translator.translate(
+                text_preprocessing(text_value, ru_en_translator=ru_en_translator, zh_en_translator=zh_en_translator, language=language_abbr[language_option]),
+                sep='',
+                num_beams=5, 
+                do_sample=True, 
+                max_length=20
+            )
 
-        st.text_area(
-            label="Emoji language",
-            placeholder="Translated texts will appear here.",
-            disabled=True,
-            value=emoji_text,
-        )
+            st.text_area(
+                label="Emoji language",
+                placeholder="Translated texts will appear here.",
+                disabled=True,
+                value=emoji_text,
+            )
+        
+torch.classes.__path__ = []
+if __name__ == "__main__":
+    multiprocessing.freeze_support()
+    main()
         
 st.markdown("""
     <style>
