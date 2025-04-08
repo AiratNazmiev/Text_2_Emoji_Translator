@@ -56,7 +56,7 @@ def load_msg2emoji_translator():
             self.tokenizer = tokenizer
             self.generator = generator.to(self.device)
             
-        def (self, sentence: str | list[str], sep: str = '', **kwargs) -> torch.Tensor:
+        def translate(self, sentence: str | list[str], sep: str = '', **kwargs) -> torch.Tensor:
             decoded_emojis_list = []
             
             if isinstance(sentence, str):
