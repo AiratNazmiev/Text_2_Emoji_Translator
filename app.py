@@ -145,11 +145,11 @@ def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: 
 
 ###
 def main():
+    msg2emoji_translator = load_msg2emoji_translator()
     if st.button("Translate"):
         if not text_value:
             st.warning("Please, enter the message 🤔", icon="⚠️")
         else:
-            msg2emoji_translator = load_msg2emoji_translator()
             emoji_text = msg2emoji_translator.translate(
                 text_preprocessing(text_value, ru_en_translator=load_ru_en_translator(), zh_en_translator=load_zh_en_translator(), language=language_abbr[language_option]),
                 sep='',
