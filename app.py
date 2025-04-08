@@ -2,8 +2,10 @@ import torch
 import transformers
 import re
 import streamlit as st
+import functools
 import os
 import multiprocessing
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 twitter_magic_number = 280
@@ -64,24 +66,42 @@ text_value = st.text_area(
 ### load translators:
 @st.cache_resource
 def load_translators():
-    
-    ru_en_translator = transformers.pipeline(
-       # "translation_ru_to_en", 
-       "translation",
-        model="Helsinki-NLP/opus-mt-ru-en",
-        cache_dir="~/.cache/huggingface/transformers",
-        use_auth_token=True
-    )
+    ru_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-ru-en")
+    ru_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-ru-en")
 
-    zh_en_translator = transformers.pipeline(
-        #"translation_zh_to_en", 
-        "translation",
-        model="Helsinki-NLP/opus-mt-zh-en",
-        cache_dir="~/.cache/huggingface/transformers",
-        use_auth_token=True
-    )
+    zh_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-zh-en")
+    zh_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-zh-en")
+    
+    def translate(text: str, model, tokenizer) -> str:
+        input_tokens = tokenizer(text, return_tensors="pt")
+        output_tokens = model.generate(**input_tokens)[0]
+        return tokenizer.decode(output_tokens, skip_special_tokens=True)
+
+    ru_en_translator = functools.partial(translate, model=ru_en_model, tokenizer=ru_en_tokenizer)
+    zh_en_translator = functools.partial(translate, model=zh_en_model, tokenizer=zh_en_tokenizer)
     
     return ru_en_translator, zh_en_translator
+
+# @st.cache_resource
+# def load_translators():
+    
+#     ru_en_translator = transformers.pipeline(
+#        # "translation_ru_to_en", 
+#        "translation",
+#         model="Helsinki-NLP/opus-mt-ru-en",
+#         cache_dir="~/.cache/huggingface/transformers",
+#         use_auth_token=True
+#     )
+
+#     zh_en_translator = transformers.pipeline(
+#         #"translation_zh_to_en", 
+#         "translation",
+#         model="Helsinki-NLP/opus-mt-zh-en",
+#         cache_dir="~/.cache/huggingface/transformers",
+#         use_auth_token=True
+#     )
+    
+#     return ru_en_translator, zh_en_translator
 ###
 
 ### create message-to-emoji translator wrapper class:
@@ -127,9 +147,9 @@ def load_msg2emoji_translator():
 ### text preprocessing
 def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: str = 'en') -> str:
     if language == 'ru':
-        text = ru_en_translator(text)[0]['translation_text']
+        text = ru_en_translator(text)
     elif language == 'zh':
-        text = zh_en_translator(text)[0]['translation_text']
+        text = zh_en_translator(text)
     
     if len(text) > twitter_magic_number:
         print(f"It's twit translator. The max length of the input is {twitter_magic_number} characters")
@@ -142,6 +162,7 @@ def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: 
 ###
 def main():
     ru_en_translator, zh_en_translator = load_translators()
+    #ru_en_translator, zh_en_translator = None, None
     msg2emoji_translator = load_msg2emoji_translator()
     if st.button("Translate"):
         if not text_value:
