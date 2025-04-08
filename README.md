@@ -17,3 +17,12 @@ BART-base (Bidirectional and Auto-Regressive Transformers) — это транс
 Cсылка на HF: https://huggingface.co/AiratNazmiev
 
 ![](img/example_en.png)
+
+![](img/example_ru.png)
+
+![](img/example_zh.png)
+Перевод: 
+"Мело, мело по всей земле
+Во все пределы.
+Свеча горела на столе,
+Свеча горела."
