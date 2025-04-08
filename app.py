@@ -63,56 +63,30 @@ text_value = st.text_area(
     height=150
 )
 
+def translate(text: str, model, tokenizer) -> str:
+    input_tokens = tokenizer(text, return_tensors="pt")
+    output_tokens = model.generate(**input_tokens)[0]
+    return tokenizer.decode(output_tokens, skip_special_tokens=True)
+
 ### load translators:
 @st.cache_resource
-def load_translators():
-    ru_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-ru-en", use_auth_token=hf_token)
-    ru_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-ru-en", use_auth_token=hf_token)
-    ru_en_tokenizer.save_pretrained("./local_models/opus-mt-ru-en")
-    ru_en_model.save_pretrained("./local_models/opus-mt-ru-en")
-    
-    ru_en_tokenizer = transformers.AutoTokenizer.from_pretrained("./local_models/opus-mt-ru-en", local_files_only=True)
-    ru_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("./local_models/opus-mt-ru-en", local_files_only=True)
-
-    zh_en_tokenizer = transformers.AutoTokenizer.from_pretrained("AiratNazmiev/Helsinki-NLP-opus-mt-zh-en-tokenizer", local_files_only=False)
-    zh_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("AiratNazmiev/Helsinki-NLP-opus-mt-zh-en-model", local_files_only=False)
-    zh_en_tokenizer.save_pretrained("./local_models/opus-mt-zh-en")
-    zh_en_model.save_pretrained("./local_models/opus-mt-zh-en")
-
-    zh_en_tokenizer = transformers.AutoTokenizer.from_pretrained("./local_models/opus-mt-zh-en", local_files_only=True)
-    zh_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("./local_models/opus-mt-zh-en", local_files_only=True)
-    
-    def translate(text: str, model, tokenizer) -> str:
-        input_tokens = tokenizer(text, return_tensors="pt")
-        output_tokens = model.generate(**input_tokens)[0]
-        return tokenizer.decode(output_tokens, skip_special_tokens=True)
+def load_ru_en_translator():
+    ru_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-ru-en")
+    ru_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-ru-en")
 
     ru_en_translator = functools.partial(translate, model=ru_en_model, tokenizer=ru_en_tokenizer)
+    
+    return ru_en_translator
+
+@st.cache_resource
+def load_zh_en_translator():
+    zh_en_tokenizer = transformers.AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-zh-en", local_files_only=False)
+    zh_en_model = transformers.AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-zh-en", local_files_only=False)
+
     zh_en_translator = functools.partial(translate, model=zh_en_model, tokenizer=zh_en_tokenizer)
     
-    return ru_en_translator, zh_en_translator
+    return zh_en_translator
 
-# @st.cache_resource
-# def load_translators():
-    
-#     ru_en_translator = transformers.pipeline(
-#        # "translation_ru_to_en", 
-#        "translation",
-#         model="Helsinki-NLP/opus-mt-ru-en",
-#         cache_dir="~/.cache/huggingface/transformers",
-#         use_auth_token=True
-#     )
-
-#     zh_en_translator = transformers.pipeline(
-#         #"translation_zh_to_en", 
-#         "translation",
-#         model="Helsinki-NLP/opus-mt-zh-en",
-#         cache_dir="~/.cache/huggingface/transformers",
-#         use_auth_token=True
-#     )
-    
-#     return ru_en_translator, zh_en_translator
-###
 
 ### create message-to-emoji translator wrapper class:
 @st.cache_resource
@@ -171,7 +145,8 @@ def text_preprocessing(text: str, ru_en_translator, zh_en_translator, language: 
 
 ###
 def main():
-    ru_en_translator, zh_en_translator = load_translators()
+    ru_en_translator = load_ru_en_translator()
+    zh_en_translator = load_zh_en_translator()
     #ru_en_translator, zh_en_translator = None, None
     msg2emoji_translator = load_msg2emoji_translator()
     if st.button("Translate"):
