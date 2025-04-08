@@ -164,3 +164,21 @@ text_value = st.text_area(
 ru_en_translator = load_ru_en_translator()
 zh_en_translator = load_zh_en_translator()
 msg2emoji_translator = load_msg2emoji_translator()
+
+if st.button("Translate"):
+    if not text_value:
+        st.warning("Please, enter the message 🤔", icon="⚠️")
+    else:
+        emoji_text = msg2emoji_translator.translate(
+            text_preprocessing(text_value, ru_en_translator=ru_en_translator, zh_en_translator=zh_en_translator, language=language_abbr[language_option]),
+            sep='',
+            num_beams=5, 
+            do_sample=True, 
+            max_length=20
+        )
+        st.text_area(
+            label="Emoji language",
+            placeholder="Translated texts will appear here.",
+            disabled=True,
+            value=emoji_text,
+        )
