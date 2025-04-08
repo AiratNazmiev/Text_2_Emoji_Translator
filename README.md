@@ -15,3 +15,5 @@ BART-base (Bidirectional and Auto-Regressive Transformers) — это транс
 Ссылка на streamlit: https://text2emojitranslator.streamlit.app/
 
 Cсылка на HF: https://huggingface.co/AiratNazmiev
+
+![](img/example_en)
