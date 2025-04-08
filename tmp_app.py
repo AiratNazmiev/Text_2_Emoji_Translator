@@ -103,4 +103,4 @@ st.text(msg2emoji_translator.translate(
     num_beams=5, 
     do_sample=True, 
     max_length=20
-)
+))
